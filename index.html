@@ -11,16 +11,16 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <title>practice</title>
     <style type="text/tailwindcss">
+      /* Alpine cloak - hide until Alpine initializes */
+        [x-cloak] {
+            display: none !important;
+        }
+
       :root {
         --primary: #4f46e5;
         --primary-hover: #4338ca;
         --font1: 'Lobster', sans-serif;
       }
-
-      /* Alpine cloak - hide until Alpine initializes */
-        [x-cloak] {
-            display: none !important;
-        }
 
         /* Ultra-thin scrollbar */
         ::-webkit-scrollbar {
@@ -140,20 +140,26 @@
         <ul class="flex items-center navitems">
           <li><a href="">Home</a></li>
           <li><a href="">Create Post</a></li>
-          <li>
-            <a href="">
+          <li x-data="{ dropdownOpen: false }" class="relative">
+            <a @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false" class="cursor-pointer select-none">
               <img
                 class="h-8 rounded-full object-cover bg-teal-200"
                 src="https://img.icons8.com/doodle/96/bart-simpson.png"
                 alt="bart-simpson"
               />
               Bart
-              <img
-                class="h-4"
-                src="https://img.icons8.com/small/64/777777/expand-arrow.png"
-                alt="expand-arrow"
+              <img x-bind:class="dropdownOpen ? 'rotate-180 duration-300' : ''"
+                class="h-4" src="https://img.icons8.com/small/64/777777/expand-arrow.png" alt="expand-arrow"
               />
             </a>
+            <div x-show="dropdownOpen" x-cloak class="absolute right-0 bg-white text-black shadow rounded-lg w-40 p-2 z-20 mt-2"
+                x-transition:enter="duration-300 ease-out" x-transition:enter-start="opacity-0 -translate-y-5 scale-90" x-transition:enter-end="opacity-100 -translate-y-0 scale-100">
+              <ul class="hoverlist [&>li>a]:justify-end">
+                <li><a href="">Profile</a></li>
+                <li><a href="">Settings</a></li>
+                <li><a href="">Logout</a></li>
+              </ul>
+            </div>
           </li>
         </ul>
       </nav>
